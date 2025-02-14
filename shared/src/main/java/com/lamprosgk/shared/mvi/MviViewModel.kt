@@ -1,4 +1,4 @@
-package com.lamprosgk.recipes.mvi
+package com.lamprosgk.shared.mvi
 
 import kotlinx.coroutines.flow.StateFlow
 

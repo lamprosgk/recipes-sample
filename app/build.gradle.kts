@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":shared"))
     implementation(project(":home:ui"))
     implementation(project(":home:domain"))
     implementation(project(":home:data"))

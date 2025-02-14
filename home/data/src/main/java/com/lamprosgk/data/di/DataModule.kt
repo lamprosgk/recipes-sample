@@ -5,11 +5,9 @@ import com.lamprosgk.data.RecipesRemoteDataSourceImpl
 import com.lamprosgk.data.RecipesRepositoryImpl
 import com.lamprosgk.data.RecipesService
 import com.lamprosgk.domain.repository.RecipesRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -24,21 +22,21 @@ object DataModule {
         return RecipesRemoteDataSourceImpl(recipesService)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideRepository(
-//        remoteDataSource: RecipesRemoteDataSource
-//    ): com.lamprosgk.domain.repository.RecipesRepository {
-//        return RecipesRepositoryImpl(remoteDataSource)
-//    }
+    @Provides
+    @Singleton
+    fun provideRepository(
+        remoteDataSource: RecipesRemoteDataSource
+    ): RecipesRepository {
+        return RecipesRepositoryImpl(remoteDataSource)
+    }
 }
 
-@Module
-@InstallIn(ViewModelComponent::class)
-abstract class RepositoryModule {
-    @Binds
-    abstract fun bindRecipesRepository(
-        recipesRepositoryImpl: RecipesRepositoryImpl // The implementation
-    ): RecipesRepository // The interface
-}
+//@Module
+//@InstallIn(ViewModelComponent::class)
+//abstract class RepositoryModule {
+//    @Binds
+//    abstract fun bindRecipesRepository(
+//        recipesRepositoryImpl: RecipesRepositoryImpl // The implementation
+//    ): RecipesRepository // The interface
+//}
 

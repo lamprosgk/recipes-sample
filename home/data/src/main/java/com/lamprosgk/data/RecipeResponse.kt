@@ -12,6 +12,7 @@ data class RecipeResponse(
 
 @Serializable
 data class RecipeData(
+    val id: Int,
     val name: String,
     val description: String,
     val instructions: List<InstructionData>,
@@ -41,6 +42,7 @@ data class TagData(
 )
 
 fun RecipeData.asDomainModel() = Recipe(
+    id = id,
     name = name,
     description = description,
     instructionsSteps = instructions.sortedBy { it.position }

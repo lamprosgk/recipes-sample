@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.lamprosgk.ui"
+    namespace = "com.lamprosgk.shared"
     compileSdk = 35
 
     defaultConfig {
@@ -36,7 +36,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+//    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
