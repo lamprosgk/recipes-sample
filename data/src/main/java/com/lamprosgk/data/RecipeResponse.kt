@@ -1,5 +1,6 @@
 package com.lamprosgk.data
 
+import com.lamprosgk.data.local.RecipeEntity
 import com.lamprosgk.domain.model.Recipe
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -53,4 +54,18 @@ fun RecipeData.asDomainModel() = Recipe(
     calories = nutrition?.calories ?: 0,
     thumbnailUrl = thumbnailUrl,
     tags = tags.map { it.displayName }
+)
+
+fun RecipeData.asEntityModel() = RecipeEntity(
+    id = id,
+    name = name,
+    description = description,
+    instructionsSteps = instructions.sortedBy { it.position }.joinToString { it.displayText },
+    prepTimeMinutes = prepTimeMinutes,
+    totalTimeMinutes = totalTimeMinutes,
+    numServings = numServings,
+    calories = nutrition?.calories ?: 0,
+    thumbnailUrl = thumbnailUrl,
+    tags = tags.joinToString { it.displayName },
+    isFavourite = false
 )

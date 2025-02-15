@@ -10,5 +10,6 @@ data class Recipe(
     val numServings: Int,
     val calories: Int,
     val thumbnailUrl: String,
-    val tags: List<String>
+    val tags: List<String>,
+    val isFavourite: Boolean = false
 )
