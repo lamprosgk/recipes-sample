@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+
     @Provides
     @Singleton
     fun provideRemoteDataSource(
@@ -24,19 +25,9 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideRepository(
+    fun provideRecipesRepository(
         remoteDataSource: RecipesRemoteDataSource
     ): RecipesRepository {
         return RecipesRepositoryImpl(remoteDataSource)
     }
 }
-
-//@Module
-//@InstallIn(ViewModelComponent::class)
-//abstract class RepositoryModule {
-//    @Binds
-//    abstract fun bindRecipesRepository(
-//        recipesRepositoryImpl: RecipesRepositoryImpl // The implementation
-//    ): RecipesRepository // The interface
-//}
-

@@ -21,8 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Recipes"
 include(":app")
-include(":home")
 include(":home:domain")
-include(":home:data")
 include(":home:ui")
 include(":shared")
+include(":data")

@@ -9,7 +9,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
@@ -30,12 +29,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLoggingCapableHttpClient(): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = /*if (BuildConfig.DEBUG)
-                HttpLoggingInterceptor.Level.BODY else */HttpLoggingInterceptor.Level.NONE
-        }
-
+    fun provideHttpClient(): OkHttpClient {
         val headerInterceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
                 .addHeader("x-rapidapi-key", "1e21315083msh66eb33136068f9ap1c30a5jsn922aad14a051")
@@ -48,7 +42,6 @@ object NetworkModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .connectTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(headerInterceptor)
-            .addInterceptor(loggingInterceptor)
             .build()
     }
 
