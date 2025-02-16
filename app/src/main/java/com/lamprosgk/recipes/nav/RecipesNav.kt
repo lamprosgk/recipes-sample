@@ -10,8 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lamprosgk.recipes.nav.NavRoutes.RECIPES
 import com.lamprosgk.recipes.nav.NavRoutes.RECIPE_DETAIL
-import com.lamprosgk.ui.screens.RecipesScreen
-import com.lamprosgk.ui.screens.RecipesViewModel
+import com.lamprosgk.home.ui.screens.RecipesScreen
+import com.lamprosgk.home.ui.screens.RecipesViewModel
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {

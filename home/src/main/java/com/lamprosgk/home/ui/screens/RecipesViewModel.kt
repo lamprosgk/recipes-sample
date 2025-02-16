@@ -1,10 +1,10 @@
-package com.lamprosgk.ui.screens
+package com.lamprosgk.home.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
-import com.lamprosgk.domain.usecase.GetRecipesUseCase
+import com.lamprosgk.home.usecase.GetRecipesUseCase
 import com.lamprosgk.shared.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

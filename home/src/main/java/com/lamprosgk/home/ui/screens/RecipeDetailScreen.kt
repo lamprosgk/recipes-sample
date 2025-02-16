@@ -1,4 +1,4 @@
-package com.lamprosgk.ui.screens
+package com.lamprosgk.home.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

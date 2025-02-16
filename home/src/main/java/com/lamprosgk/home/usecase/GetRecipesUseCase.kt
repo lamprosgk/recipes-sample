@@ -1,4 +1,4 @@
-package com.lamprosgk.domain.usecase
+package com.lamprosgk.home.usecase
 
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe

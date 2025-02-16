@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":home:domain"))
+    implementation(project(":domain"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
