@@ -2,7 +2,7 @@ package com.lamprosgk.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lamprosgk.domain.DataResult
+import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.domain.usecase.GetRecipesUseCase
 import com.lamprosgk.shared.mvi.MviViewModel
@@ -53,15 +53,15 @@ class RecipesViewModel @Inject constructor(
         _state.update { RecipesViewState.Error(exception.message ?: "An error occurred") }
     }
 
-    private fun handleGetRecipesResult(dataResult: DataResult<List<Recipe>>) {
+    private fun handleGetRecipesResult(result: Result<List<Recipe>>) {
         _state.update {
-            when (dataResult) {
-                is DataResult.Success -> RecipesViewState.Success(dataResult.data)
-                is DataResult.Error -> RecipesViewState.Error(
-                    dataResult.exception.message ?: "An error occurred"
+            when (result) {
+                is Result.Success -> RecipesViewState.Success(result.data)
+                is Result.Error -> RecipesViewState.Error(
+                    result.exception.message ?: "An error occurred"
                 )
 
-                DataResult.Loading -> RecipesViewState.Loading
+                Result.Loading -> RecipesViewState.Loading
             }
         }
     }
