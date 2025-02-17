@@ -50,4 +50,17 @@ class RecipesRepositoryImpl @Inject constructor(
             emit(Result.Error(e))
         }
     }
+
+    override suspend fun addToFavourites(id: Int): Result<Unit> {
+        return try {
+            localDataSource.markAsFavorite(id)
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun removeFromFavourites(id: Int): Result<Unit> {
+        TODO("Not yet implemented")
+    }
 }

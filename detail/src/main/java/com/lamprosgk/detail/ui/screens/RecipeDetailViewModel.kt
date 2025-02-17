@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lamprosgk.detail.nav.RecipeDetailNavArgs.RECIPE_ID_ARG
+import com.lamprosgk.detail.usecase.AddToFavouritesUseCase
 import com.lamprosgk.detail.usecase.GetRecipeUseCase
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getRecipeUseCase: GetRecipeUseCase
+    private val getRecipeUseCase: GetRecipeUseCase,
+    private val addToFavouritesUseCase: AddToFavouritesUseCase
 ) : ViewModel(), MviViewModel<RecipeDetailViewState, RecipeDetailIntent> {
 
     private val recipeId: Int = checkNotNull(savedStateHandle[RECIPE_ID_ARG])
@@ -57,21 +59,42 @@ class RecipeDetailViewModel @Inject constructor(
     }
 
     private fun handleGetRecipesError(throwable: Throwable) {
-        _state.update { RecipeDetailViewState.Error(throwable.message ?: "An error occurred, could not fetch recipe.") }
+        _state.update {
+            RecipeDetailViewState.Error(
+                throwable.message ?: "An error occurred, could not fetch recipe."
+            )
+        }
     }
-
-
 
 
     override fun onIntent(intent: RecipeDetailIntent) {
         when (intent) {
-            is RecipeDetailIntent.AddToFavouritesIntent -> {
-                // Handle AddToFavouritesIntent
-            }
-
+            is RecipeDetailIntent.AddToFavouritesIntent -> addToFavorites(intent.id)
             is RecipeDetailIntent.RemoveFromFavouritesIntent -> {
                 // Handle RemoveFromFavouritesIntent
             }
         }
     }
+
+    private fun addToFavorites(recipeId: Int) {
+        viewModelScope.launch {
+            when (val result = addToFavouritesUseCase(recipeId)) {
+                is Result.Success -> {
+                    // TODO
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        RecipeDetailViewState.Error("Failed to add to favorites: ${result.exception.message}")
+                    }
+                }
+
+                is Result.Loading -> {
+                    // not relevant here
+                }
+            }
+        }
+    }
+
+
 }
