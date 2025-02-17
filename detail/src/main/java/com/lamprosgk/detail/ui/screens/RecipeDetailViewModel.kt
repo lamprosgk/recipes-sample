@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.lamprosgk.detail.nav.RecipeDetailNavArgs.RECIPE_ID_ARG
 import com.lamprosgk.detail.usecase.AddToFavouritesUseCase
 import com.lamprosgk.detail.usecase.GetRecipeUseCase
+import com.lamprosgk.detail.usecase.RemoveFromFavouritesUseCase
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviViewModel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class RecipeDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getRecipeUseCase: GetRecipeUseCase,
-    private val addToFavouritesUseCase: AddToFavouritesUseCase
+    private val addToFavouritesUseCase: AddToFavouritesUseCase,
+    private val removeFromFavouritesUseCase: RemoveFromFavouritesUseCase
 ) : ViewModel(), MviViewModel<RecipeDetailViewState, RecipeDetailIntent> {
 
     private val recipeId: Int = checkNotNull(savedStateHandle[RECIPE_ID_ARG])
@@ -70,15 +72,33 @@ class RecipeDetailViewModel @Inject constructor(
     override fun onIntent(intent: RecipeDetailIntent) {
         when (intent) {
             is RecipeDetailIntent.AddToFavouritesIntent -> addToFavorites(intent.id)
-            is RecipeDetailIntent.RemoveFromFavouritesIntent -> {
-                // Handle RemoveFromFavouritesIntent
-            }
+            is RecipeDetailIntent.RemoveFromFavouritesIntent -> removeFromFavorites(intent.id)
         }
     }
 
     private fun addToFavorites(recipeId: Int) {
         viewModelScope.launch {
             when (val result = addToFavouritesUseCase(recipeId)) {
+                is Result.Success -> {
+                    // TODO
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        RecipeDetailViewState.Error("Failed to add to favorites: ${result.exception.message}")
+                    }
+                }
+
+                is Result.Loading -> {
+                    // not relevant here
+                }
+            }
+        }
+    }
+
+    private fun removeFromFavorites(recipeId: Int) {
+        viewModelScope.launch {
+            when (val result = removeFromFavouritesUseCase(recipeId)) {
                 is Result.Success -> {
                     // TODO
                 }

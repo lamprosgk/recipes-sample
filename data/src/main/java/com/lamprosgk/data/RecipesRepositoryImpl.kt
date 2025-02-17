@@ -21,7 +21,7 @@ class RecipesRepositoryImpl @Inject constructor(
 
         try {
             val remoteRecipes = remoteDataSource.getRecipes()
-            localDataSource.insertRecipes(remoteRecipes.map { it.asEntityModel() })
+            localDataSource.upsertRecipes(remoteRecipes.map { it.asEntityModel() })
         } catch (e: Exception) {
             Log.e(
                 "RecipesRepository",
@@ -44,23 +44,25 @@ class RecipesRepositoryImpl @Inject constructor(
         emit(Result.Loading)
 
         try {
-            val recipe = localDataSource.getRecipe(id).first()
-            emit(Result.Success(recipe.asDomainModel()))
+            localDataSource.getRecipe(id).collect { entity ->
+                emit(Result.Success(entity.asDomainModel()))
+            }
         } catch (e: Exception) {
             emit(Result.Error(e))
         }
     }
 
-    override suspend fun addToFavourites(id: Int): Result<Unit> {
-        return try {
-            localDataSource.markAsFavorite(id)
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
+    override suspend fun addToFavourites(id: Int): Result<Unit> = try {
+        localDataSource.addToFavourites(id)
+        Result.Success(Unit)
+    } catch (e: Exception) {
+        Result.Error(e)
     }
 
-    override suspend fun removeFromFavourites(id: Int): Result<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun removeFromFavourites(id: Int): Result<Unit> = try {
+        localDataSource.removeFromFavourites(id)
+        Result.Success(Unit)
+    } catch (e: Exception) {
+        Result.Error(e)
     }
 }

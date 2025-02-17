@@ -6,9 +6,9 @@ import javax.inject.Inject
 interface RecipesLocalDataSource {
     fun getAllRecipes(): Flow<List<RecipeEntity>> // flow to observe for db changes
     fun getRecipe(id: Int): Flow<RecipeEntity>
-    suspend fun insertRecipes(recipes: List<RecipeEntity>)
-    suspend fun markAsFavorite(recipeId: Int)
-    suspend fun unmarkAsFavorite(recipeId: Int)
+    suspend fun upsertRecipes(recipes: List<RecipeEntity>)
+    suspend fun addToFavourites(recipeId: Int)
+    suspend fun removeFromFavourites(recipeId: Int)
 }
 
 class RecipesLocalDataSourceImpl @Inject constructor(private val recipeDao: RecipeDao) :
@@ -16,12 +16,12 @@ class RecipesLocalDataSourceImpl @Inject constructor(private val recipeDao: Reci
 
     override fun getAllRecipes(): Flow<List<RecipeEntity>> = recipeDao.getAllRecipes()
 
-    override suspend fun insertRecipes(recipes: List<RecipeEntity>) =
-        recipeDao.insertRecipes(recipes)
+    override suspend fun upsertRecipes(recipes: List<RecipeEntity>) =
+        recipeDao.upsertRecipes(recipes)
 
     override fun getRecipe(id: Int): Flow<RecipeEntity> = recipeDao.getRecipe(id)
 
-    override suspend fun markAsFavorite(recipeId: Int) = recipeDao.markAsFavorite(recipeId)
+    override suspend fun addToFavourites(recipeId: Int) = recipeDao.addToFavourites(recipeId)
 
-    override suspend fun unmarkAsFavorite(recipeId: Int) = recipeDao.unmarkAsFavorite(recipeId)
+    override suspend fun removeFromFavourites(recipeId: Int) = recipeDao.removeFromFavourites(recipeId)
 }
