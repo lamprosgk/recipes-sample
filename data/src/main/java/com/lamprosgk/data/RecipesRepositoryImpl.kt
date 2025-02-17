@@ -39,4 +39,15 @@ class RecipesRepositoryImpl @Inject constructor(
             emit(Result.Success(entities.map { it.asDomainModel() }))
         }
     }
+
+    override fun getRecipe(id: Int): Flow<Result<Recipe>> = flow {
+        emit(Result.Loading)
+
+        try {
+            val recipe = localDataSource.getRecipe(id).first()
+            emit(Result.Success(recipe.asDomainModel()))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }
 }

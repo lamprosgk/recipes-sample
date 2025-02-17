@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipesRepository {
      fun getRecipes(): Flow<Result<List<Recipe>>>
+     fun getRecipe(id: Int): Flow<Result<Recipe>>
 }

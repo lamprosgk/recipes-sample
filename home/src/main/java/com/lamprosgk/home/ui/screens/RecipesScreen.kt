@@ -209,12 +209,3 @@ private fun RecipeScreenPreview() {
         )
     }
 }
-
-
-
-// Example of how to trigger an intent (e.g., in a button click)
-/*
-Button(onClick = { onIntent(RecipesIntent.SomeAction) }) {
-Text("Perform Action")
-}
-*/

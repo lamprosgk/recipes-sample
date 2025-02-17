@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 interface RecipesLocalDataSource {
     fun getAllRecipes(): Flow<List<RecipeEntity>> // flow to observe for db changes
+    fun getRecipe(id: Int): Flow<RecipeEntity>
     suspend fun insertRecipes(recipes: List<RecipeEntity>)
     suspend fun markAsFavorite(recipeId: Int)
     suspend fun unmarkAsFavorite(recipeId: Int)
@@ -17,6 +18,8 @@ class RecipesLocalDataSourceImpl @Inject constructor(private val recipeDao: Reci
 
     override suspend fun insertRecipes(recipes: List<RecipeEntity>) =
         recipeDao.insertRecipes(recipes)
+
+    override fun getRecipe(id: Int): Flow<RecipeEntity> = recipeDao.getRecipe(id)
 
     override suspend fun markAsFavorite(recipeId: Int) = recipeDao.markAsFavorite(recipeId)
 
