@@ -1,4 +1,4 @@
-package com.lamprosgk.detail
+package com.lamprosgk.detail.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import com.lamprosgk.detail.nav.RecipeDetailNavArgs.RECIPE_ID_ARG

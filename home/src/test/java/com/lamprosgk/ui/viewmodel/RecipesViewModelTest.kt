@@ -1,4 +1,4 @@
-package com.lamprosgk.ui
+package com.lamprosgk.ui.viewmodel
 
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe

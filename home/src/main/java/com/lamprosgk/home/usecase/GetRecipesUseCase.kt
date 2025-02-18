@@ -13,11 +13,12 @@ class GetRecipesUseCase @Inject constructor(
     operator fun invoke(): Flow<Result<List<Recipe>>> =
         recipesRepository.getRecipes().map { result ->
             if (result is Result.Success) {
-                // sort with favourites first and then by name
                 Result.Success(
-                    result.data.sortedWith(
-                        compareByDescending<Recipe> { it.isFavourite }.thenBy { it.name }
-                    )
+                    result.data.let { recipes ->
+                        // put favourites first
+                        val (favourites, nonFavourites) = recipes.partition { it.isFavourite }
+                        favourites.sortedBy { it.name } + nonFavourites
+                    }
                 )
             } else {
                 result
