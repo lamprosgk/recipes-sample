@@ -9,7 +9,6 @@ import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.domain.repository.RecipesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -22,21 +21,15 @@ class RecipesRepositoryImpl @Inject constructor(
         emit(Result.Loading)
 
         try {
+            // fetch data from remote and store it in database
             val remoteRecipes = remoteDataSource.getRecipes()
             localDataSource.upsertRecipes(remoteRecipes.map { it.asEntityModel() })
         } catch (e: Exception) {
-            Log.e(
-                "RecipesRepository",
-                "Error while fetching recipes, loading local data: ${e.message}"
-            )
-            val cachedRecipes = localDataSource.getAllRecipes().first()
-            if (cachedRecipes.isEmpty()) {
-                emit(Result.Error(e))
-                return@flow
-            }
+            // log the error (or show a message), but don't stop the flow
+            Log.e("RecipesRepository", "Error fetching recipes: ${e.message}")
         }
 
-        // Collect and emit from database
+        // emit the data from the database
         localDataSource.getAllRecipes().collect { entities ->
             emit(Result.Success(entities.map { it.asDomainModel() }))
         }
