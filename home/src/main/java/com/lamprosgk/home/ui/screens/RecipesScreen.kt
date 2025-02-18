@@ -10,17 +10,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +43,6 @@ sealed interface RecipesIntent : MviIntent {
     class RecipeClickedIntent(val id: Int) : RecipesIntent
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipesScreen(
     state: RecipesViewState,
@@ -52,34 +53,19 @@ fun RecipesScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "Recipes",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-        )
-
         Box(modifier = Modifier.fillMaxSize()) {
             when (state) {
-                is RecipesViewState.Loading -> {
+                RecipesViewState.Loading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
                     )
                 }
 
                 is RecipesViewState.Success -> {
                     if (state.recipes.isEmpty()) {
-                        Text(
-                            text = "No recipes found",
-                            modifier = Modifier.align(Alignment.Center),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        EmptyRecipesText()
                     } else {
                         RecipesList(
                             recipes = state.recipes,
@@ -91,14 +77,35 @@ fun RecipesScreen(
                 }
 
                 is RecipesViewState.Error -> {
-                    ErrorMessage(
-                        message = state.message,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    ErrorText(message = state.message)
                 }
             }
         }
     }
+}
+
+@Composable
+private fun EmptyRecipesText() {
+    Text(
+        text = "No recipes found",
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center),
+        style = MaterialTheme.typography.bodyLarge
+    )
+}
+
+@Composable
+private fun ErrorText(message: String) {
+    Text(
+        text = message,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.error,
+        textAlign = TextAlign.Center
+    )
 }
 
 @Composable
@@ -124,6 +131,7 @@ private fun RecipesList(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecipeCard(
     recipe: Recipe,
@@ -143,44 +151,54 @@ private fun RecipeCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = recipe.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                if (recipe.isFavourite) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "Favorite recipe",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
             Text(
-                text = recipe.name,
-                style = MaterialTheme.typography.titleMedium
+                text = recipe.tags.take(3).joinToString(" • "),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "${recipe.totalTimeMinutes} min",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = "${recipe.calories} cal",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "${recipe.totalTimeMinutes} min",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = "${recipe.calories} cal",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-private fun ErrorMessage(
-    message: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = message,
-        modifier = modifier.padding(16.dp),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.error,
-        textAlign = TextAlign.Center
-    )
 }
 
 @Preview(
@@ -193,13 +211,15 @@ private fun RecipeScreenPreview() {
         id = 1,
         name = "Chicken Stir Fry",
         description = "Quick and easy stir fry",
+        ingredients = listOf("Chicken", "Broccoli", "Soy sauce"),
         instructionsSteps = listOf("Step 1", "Step 2"),
         prepTimeMinutes = 10,
         totalTimeMinutes = 25,
         numServings = 4,
         calories = 350,
         thumbnailUrl = "",
-        tags = listOf("Asian", "Quick", "Healthy")
+        tags = listOf("Asian", "Quick", "Healthy"),
+        isFavourite = true
     )
 
     MaterialTheme {
