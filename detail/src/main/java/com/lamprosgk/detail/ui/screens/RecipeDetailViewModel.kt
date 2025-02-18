@@ -29,7 +29,6 @@ class RecipeDetailViewModel @Inject constructor(
 
     private val recipeId: Int = checkNotNull(savedStateHandle[RECIPE_ID_ARG])
 
-
     private val _state =
         MutableStateFlow<RecipeDetailViewState>(RecipeDetailViewState.Loading)
 
@@ -68,7 +67,6 @@ class RecipeDetailViewModel @Inject constructor(
         }
     }
 
-
     override fun onIntent(intent: RecipeDetailIntent) {
         when (intent) {
             is RecipeDetailIntent.AddToFavouritesIntent -> addToFavorites(intent.id)
@@ -78,19 +76,10 @@ class RecipeDetailViewModel @Inject constructor(
 
     private fun addToFavorites(recipeId: Int) {
         viewModelScope.launch {
-            when (val result = addToFavouritesUseCase(recipeId)) {
-                is Result.Success -> {
-                    // TODO
-                }
-
-                is Result.Error -> {
-                    _state.update {
-                        RecipeDetailViewState.Error("Failed to add to favorites: ${result.exception.message}")
-                    }
-                }
-
-                is Result.Loading -> {
-                    // not relevant here
+            val result = addToFavouritesUseCase(recipeId)
+            if (result is Result.Error) {
+                _state.update {
+                    RecipeDetailViewState.Error("Failed to add to favorites: ${result.exception.message}")
                 }
             }
         }
@@ -98,23 +87,12 @@ class RecipeDetailViewModel @Inject constructor(
 
     private fun removeFromFavorites(recipeId: Int) {
         viewModelScope.launch {
-            when (val result = removeFromFavouritesUseCase(recipeId)) {
-                is Result.Success -> {
-                    // TODO
-                }
-
-                is Result.Error -> {
-                    _state.update {
-                        RecipeDetailViewState.Error("Failed to add to favorites: ${result.exception.message}")
-                    }
-                }
-
-                is Result.Loading -> {
-                    // not relevant here
+            val result = removeFromFavouritesUseCase(recipeId)
+            if (result is Result.Error) {
+                _state.update {
+                    RecipeDetailViewState.Error("Failed to remove from favorites: ${result.exception.message}")
                 }
             }
         }
     }
-
-
 }
