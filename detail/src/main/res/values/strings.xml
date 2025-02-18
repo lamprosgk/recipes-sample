@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipe_detail_info_label_time">Time</string>
+    <string name="recipe_detail_info_label_servings">Servings</string>
+    <string name="recipe_detail_info_label_calories">Calories</string>
+    <string name="recipe_detail_info_time">%1$s min</string>
+    <string name="recipe_detail_info_calories">%1$s cal</string>
+    <string name="recipe_detail_label_ingredients">What you\'ll need</string>
+    <string name="recipe_detail_ingredient_formatter">• %1$s</string>
+    <string name="recipe_detail_label_instructions">Let\'s make it!</string>
+    <string name="receipe_detail_instruction_step_formatter">%1$s. %2$s</string>
+</resources>

@@ -25,12 +25,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviIntent
 import com.lamprosgk.shared.mvi.MviModel
 import com.lamprosgk.ui.ErrorMessage
+import com.lamprosgk.ui.R
 
 sealed interface RecipesViewState : MviModel {
     data class Success(val recipes: List<Recipe> = emptyList()) : RecipesViewState
@@ -89,7 +91,7 @@ fun RecipesScreen(
 @Composable
 private fun EmptyRecipesText() {
     Text(
-        text = "No recipes found",
+        text = stringResource(R.string.recipes_empty_message),
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center),
@@ -173,13 +175,18 @@ private fun RecipeCard(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    if (recipe.totalTimeMinutes > 0) {
+                        Text(
+                            text = stringResource(
+                                R.string.recipe_item_info_time,
+                                recipe.totalTimeMinutes
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                     Text(
-                        text = "${recipe.totalTimeMinutes} min",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        text = "${recipe.calories} cal",
+                        text = stringResource(R.string.recipe_detail_info_calories, recipe.calories),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )

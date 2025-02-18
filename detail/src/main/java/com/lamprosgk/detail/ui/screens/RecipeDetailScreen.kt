@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -31,6 +32,7 @@ import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviIntent
 import com.lamprosgk.shared.mvi.MviModel
 import com.lamprosgk.ui.ErrorMessage
+import com.lamprosgk.ui.R
 
 sealed interface RecipeDetailViewState : MviModel {
     data class Success(val recipe: Recipe) : RecipeDetailViewState
@@ -106,9 +108,17 @@ fun RecipeDetailScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
-                                    RecipeInfoItem("Time", "$totalTimeMinutes min")
-                                    RecipeInfoItem("Servings", "$numServings")
-                                    RecipeInfoItem("Calories", "$calories cal")
+                                    RecipeInfoItem(stringResource(R.string.recipe_detail_info_label_time),
+                                        stringResource(
+                                            R.string.recipe_detail_info_time, totalTimeMinutes
+                                        )
+                                    )
+                                    RecipeInfoItem(stringResource(R.string.recipe_detail_info_label_servings), "$numServings")
+                                    RecipeInfoItem(stringResource(R.string.recipe_detail_info_label_calories),
+                                        stringResource(
+                                            R.string.recipe_detail_info_calories, calories
+                                        )
+                                    )
                                 }
 
                                 // description
@@ -123,12 +133,15 @@ fun RecipeDetailScreen(
                                     .padding(vertical = 8.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Text(
-                                        text = "What you'll need",
+                                        text = stringResource(R.string.recipe_detail_label_ingredients),
                                         style = MaterialTheme.typography.titleLarge
                                     )
                                     ingredients.forEach { ingredient ->
                                         Text(
-                                            text = "• $ingredient",
+                                            text = stringResource(
+                                                R.string.recipe_detail_ingredient_formatter,
+                                                ingredient
+                                            ),
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                     }
@@ -140,12 +153,16 @@ fun RecipeDetailScreen(
                                     .padding(vertical = 8.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Text(
-                                        text = "Let's make it!",
+                                        text = stringResource(R.string.recipe_detail_label_instructions),
                                         style = MaterialTheme.typography.titleLarge
                                     )
                                     instructionsSteps.forEachIndexed { index, step ->
                                         Text(
-                                            text = "${index + 1}. $step",
+                                            text = stringResource(
+                                                R.string.receipe_detail_instruction_step_formatter,
+                                                index + 1,
+                                                step
+                                            ),
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                     }

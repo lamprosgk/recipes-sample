@@ -25,7 +25,7 @@ class RecipesRepositoryImpl @Inject constructor(
             val remoteRecipes = remoteDataSource.getRecipes()
             localDataSource.upsertRecipes(remoteRecipes.map { it.asEntityModel() })
         } catch (e: Exception) {
-            // log the error (or show a message), but don't stop the flow
+            // log the error - could show a message too, but don't stop the flow
             Log.e("RecipesRepository", "Error fetching recipes: ${e.message}")
         }
 

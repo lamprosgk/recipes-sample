@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.lamprosgk.recipes.nav.AppNavigation
 import com.lamprosgk.recipes.ui.theme.RecipesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ fun RecipesApp() {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Recipes", color = MaterialTheme.colorScheme.onPrimary) },
+                title = { Text(stringResource(R.string.toolbar_title), color = MaterialTheme.colorScheme.onPrimary) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )

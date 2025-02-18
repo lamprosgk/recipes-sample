@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipes_empty_message">No recipes found</string>
+    <string name="recipe_item_info_time">%1$s min</string>
+    <string name="recipe_detail_info_calories">%1$s cal</string>
+</resources>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Recipes</string>
+    <string name="toolbar_title">Recipes</string>
 </resources>
