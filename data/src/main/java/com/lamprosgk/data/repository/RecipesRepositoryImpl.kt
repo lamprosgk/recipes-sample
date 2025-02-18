@@ -1,8 +1,10 @@
-package com.lamprosgk.data
+package com.lamprosgk.data.repository
 
 import android.util.Log
 import com.lamprosgk.data.local.RecipesLocalDataSource
 import com.lamprosgk.data.local.asDomainModel
+import com.lamprosgk.data.remote.RecipesRemoteDataSource
+import com.lamprosgk.data.remote.asEntityModel
 import com.lamprosgk.domain.Result
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.domain.repository.RecipesRepository

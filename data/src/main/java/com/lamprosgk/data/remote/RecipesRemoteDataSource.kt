@@ -1,4 +1,4 @@
-package com.lamprosgk.data
+package com.lamprosgk.data.remote
 
 import retrofit2.HttpException
 import javax.inject.Inject

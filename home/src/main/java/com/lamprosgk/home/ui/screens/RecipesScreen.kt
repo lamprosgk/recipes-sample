@@ -19,19 +19,18 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviIntent
 import com.lamprosgk.shared.mvi.MviModel
+import com.lamprosgk.ui.ErrorMessage
 
 sealed interface RecipesViewState : MviModel {
     data class Success(val recipes: List<Recipe> = emptyList()) : RecipesViewState
@@ -77,7 +76,10 @@ fun RecipesScreen(
                 }
 
                 is RecipesViewState.Error -> {
-                    ErrorText(message = state.message)
+                    ErrorMessage(
+                        message = state.message,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }
@@ -92,19 +94,6 @@ private fun EmptyRecipesText() {
             .fillMaxSize()
             .wrapContentSize(Alignment.Center),
         style = MaterialTheme.typography.bodyLarge
-    )
-}
-
-@Composable
-private fun ErrorText(message: String) {
-    Text(
-        text = message,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.error,
-        textAlign = TextAlign.Center
     )
 }
 
@@ -131,7 +120,6 @@ private fun RecipesList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecipeCard(
     recipe: Recipe,

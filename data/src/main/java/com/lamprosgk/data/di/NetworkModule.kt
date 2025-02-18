@@ -1,6 +1,6 @@
 package com.lamprosgk.data.di
 
-import com.lamprosgk.data.RecipesService
+import com.lamprosgk.data.remote.RecipesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

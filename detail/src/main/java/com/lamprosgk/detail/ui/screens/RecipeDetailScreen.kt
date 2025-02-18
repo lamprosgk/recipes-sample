@@ -18,20 +18,19 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviIntent
 import com.lamprosgk.shared.mvi.MviModel
+import com.lamprosgk.ui.ErrorMessage
 
 sealed interface RecipeDetailViewState : MviModel {
     data class Success(val recipe: Recipe) : RecipeDetailViewState
@@ -217,20 +216,6 @@ private fun FavoriteButton(
     }
 }
 
-@Composable
-private fun ErrorMessage(
-    message: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = message,
-        modifier = modifier.padding(16.dp),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.error,
-        textAlign = TextAlign.Center
-    )
-}
-
 private val sampleRecipe = Recipe(
     id = 1,
     name = "Spaghetti",
@@ -254,10 +239,12 @@ private val sampleRecipe = Recipe(
     isFavourite = false
 )
 
-@Preview
-@Composable
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)@Composable
 fun RecipeDetailScreenPreview() {
-    Surface {
+    MaterialTheme {
         RecipeDetailScreen(
             state = RecipeDetailViewState.Success(sampleRecipe),
             onIntent = {}

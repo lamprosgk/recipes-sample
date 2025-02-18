@@ -1,9 +1,9 @@
 package com.lamprosgk.data.di
 
-import com.lamprosgk.data.RecipesRemoteDataSource
-import com.lamprosgk.data.RecipesRemoteDataSourceImpl
-import com.lamprosgk.data.RecipesRepositoryImpl
-import com.lamprosgk.data.RecipesService
+import com.lamprosgk.data.remote.RecipesRemoteDataSource
+import com.lamprosgk.data.remote.RecipesRemoteDataSourceImpl
+import com.lamprosgk.data.repository.RecipesRepositoryImpl
+import com.lamprosgk.data.remote.RecipesService
 import com.lamprosgk.data.local.RecipeDao
 import com.lamprosgk.data.local.RecipesLocalDataSource
 import com.lamprosgk.data.local.RecipesLocalDataSourceImpl

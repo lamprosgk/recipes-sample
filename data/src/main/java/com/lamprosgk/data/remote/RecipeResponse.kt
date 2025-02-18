@@ -1,4 +1,4 @@
-package com.lamprosgk.data
+package com.lamprosgk.data.remote
 
 import com.lamprosgk.data.local.RecipeEntity
 import kotlinx.serialization.SerialName
