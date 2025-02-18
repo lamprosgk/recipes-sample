@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.lamprosgk.domain.model.Recipe
 import com.lamprosgk.shared.mvi.MviIntent
 import com.lamprosgk.shared.mvi.MviModel
-import com.lamprosgk.ui.ErrorMessage
+import com.lamprosgk.shared.ui.ErrorMessage
 import com.lamprosgk.ui.R
 
 sealed interface RecipesViewState : MviModel {

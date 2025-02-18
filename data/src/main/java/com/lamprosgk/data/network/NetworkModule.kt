@@ -1,4 +1,4 @@
-package com.lamprosgk.data.di
+package com.lamprosgk.data.network
 
 import com.lamprosgk.data.remote.RecipesService
 import dagger.Module
@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private val baseUrl = "https://tasty.p.rapidapi.com/recipes/"
 
     @Provides
     @Singleton
@@ -32,8 +31,8 @@ object NetworkModule {
     fun provideHttpClient(): OkHttpClient {
         val headerInterceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("x-rapidapi-key", "1e21315083msh66eb33136068f9ap1c30a5jsn922aad14a051")
-                .addHeader("x-rapidapi-host", "tasty.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", NetworkConfig.API_KEY)
+                .addHeader("x-rapidapi-host", NetworkConfig.API_HOST)
                 .build()
             chain.proceed(request)
         }
@@ -53,7 +52,7 @@ object NetworkModule {
     ): RecipesService {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(baseUrl)
+            .baseUrl(NetworkConfig.BASE_URL)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(RecipesService::class.java)

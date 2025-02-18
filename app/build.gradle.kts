@@ -1,3 +1,7 @@
+
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +12,15 @@ plugins {
 
 hilt {
     enableAggregatingTask = true
+}
+
+val secretsFile = rootProject.file("network.properties")
+val properties = Properties().apply {
+    if (secretsFile.exists()) {
+        load(FileInputStream(secretsFile))
+    } else {
+        throw GradleException("network.properties not found")
+    }
 }
 
 android {
@@ -22,6 +35,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("RAPID_API_KEY")}\"")
+        buildConfigField("String", "API_HOST", "\"${properties.getProperty("RAPID_API_HOST")}\"")
+        buildConfigField("String", "BASE_URL", "\"${properties.getProperty("BASE_URL")}\"")
     }
 
     buildTypes {
