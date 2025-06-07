@@ -13,3 +13,5 @@ Sample app demonstrating Clean Architecture, MVI, modules, offline-first functio
 - `:shared` (MVI base classes + shared UI)
 
 
+### Architecture
+![recipes-demo-diagram](https://github.com/user-attachments/assets/fb26fd89-b3d7-4e03-aeb2-27860432852a)
